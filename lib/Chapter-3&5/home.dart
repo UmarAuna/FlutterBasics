@@ -1,9 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_basics_2/Chapter-3/card1.dart';
-import 'card1.dart';
-import 'card2.dart';
-import 'card3.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'screens/recipes_screen.dart';
+import 'screens/explore_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -17,9 +16,13 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   static List<Widget> pages = <Widget>[
-    const Card1(),
+    ExploreScreen(),
+    RecipesScreen(),
+    Container(color: Colors.blue),
+
+    /* const Card1(),
     const Card2(),
-    const Card3(),
+    const Card3(),*/
   ];
 
   void _onItemTapped(int index) {
@@ -40,19 +43,31 @@ class _HomeState extends State<Home> {
         selectedItemColor: Theme.of(context).textSelectionTheme.selectionColor,
           items: <BottomNavigationBarItem>[
             const BottomNavigationBarItem(
-              icon: Icon(Icons.card_giftcard),
-              label: 'Card'
+              icon: Icon(Icons.explore),
+              label: 'Explore'
             ),
             const BottomNavigationBarItem(
-                icon: Icon(Icons.card_giftcard),
-                label: 'Card2'
+                icon: Icon(Icons.book),
+                label: 'Recipes'
             ),
             const BottomNavigationBarItem(
-                icon: Icon(Icons.card_giftcard),
-                label: 'Card3'
+                icon: Icon(Icons.list),
+                label: 'To Buy'
             ),
           ],
       ),
+    );
+  }
+
+  toast(String message){
+    return Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.blueGrey,
+        textColor: Colors.white,
+        fontSize: 14.0
     );
   }
 }

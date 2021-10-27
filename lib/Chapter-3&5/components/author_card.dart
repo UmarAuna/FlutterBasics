@@ -1,20 +1,21 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'fooderlich_theme.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../../fooderlich_theme.dart';
 
-import 'cirlce_image.dart';
+import 'circle_image.dart';
 
 class AuthorCard extends StatefulWidget {
 
-  final String? authorName;
-  final String? title;
+  final String authorName;
+  final String title;
   final ImageProvider? imageProvider;
 
   const AuthorCard({
     Key? key,
-    this.authorName,
-    this.title,
+    required this.authorName,
+    required this.title,
     this.imageProvider,
 }) : super(key: key);
 
@@ -36,14 +37,27 @@ class _AuthorCardState extends State<AuthorCard> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(children: [
-              CircleImage(imageProvider: widget.imageProvider, imageRadius: 28,),
+              InkWell(
+                onTap:() {
+                  Fluttertoast.showToast(
+                      msg: "I did it",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.blueGrey,
+                      textColor: Colors.white,
+                      fontSize: 14.0
+                  );
+                },
+                child: CircleImage(imageProvider: widget.imageProvider, imageRadius: 28,),
+              ),
               const SizedBox(width: 8),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.authorName!,
+                  Text(widget.authorName,
                   style: FooderlichTheme.lightTextTheme.headline2,),
-                  Text(widget.title!,
+                  Text(widget.title,
                     style: FooderlichTheme.lightTextTheme.headline3,
                   )
                 ],
