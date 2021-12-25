@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_basics_2/Chapter-3&5&6/models/fooderlich_pages.dart';
-import 'package:flutter_basics_2/Chapter-3&5&6/models/grocery_item.dart';
-import 'package:flutter_basics_2/Chapter-3&5&6/models/grocery_manager.dart';
+import 'package:flutter_basics_2/Chapter-3&5&6&7&8/models/fooderlich_pages.dart';
+import 'package:flutter_basics_2/Chapter-3&5&6&7&8/models/grocery_item.dart';
+import 'package:flutter_basics_2/Chapter-3&5&6&7&8/models/grocery_manager.dart';
 import 'package:provider/provider.dart';
 import 'empty_grocery_screen.dart';
 import 'grocery_item_screen.dart';

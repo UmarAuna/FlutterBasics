@@ -114,7 +114,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return SmoothPageIndicator(
       controller: controller,
       count: 3,
-      effect: WormEffect(
+      effect: ExpandingDotsEffect(
         activeDotColor: rwColor,
       ),
     );

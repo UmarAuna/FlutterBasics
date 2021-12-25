@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_basics_2/Chapter-3&5&6&7&8/navigation/app_route_parser.dart';
 import 'package:provider/provider.dart';
-import '../fooderlich_theme.dart';
-import 'screens/home.dart';
-import 'models/models.dart';
-import '/navigation/app_router.dart';
+import 'fooderlich_theme.dart';
+import 'Chapter-3&5&6&7&8/screens/home.dart';
+import 'Chapter-3&5&6&7&8/models/models.dart';
+import '../Chapter-3&5&6&7&8/navigation/app_router.dart';
 
 void main() {
   runApp(const Fooderlich());
@@ -22,6 +23,8 @@ class _FooderlichState extends State<Fooderlich> {
   final _profileManager = ProfileManager();
   final _appStateManager = AppStateManager();
   late AppRouter _appRouter;
+  // TODO: Initialize RouteInformationParser
+  final routeParser = AppRouteParser();
 
   @override
   void initState() {
@@ -55,15 +58,19 @@ class _FooderlichState extends State<Fooderlich> {
             theme = FooderlichTheme.light();
           }
 
-          return MaterialApp(
+          // TODO: Replace with Material.router
+          return MaterialApp.router(
             theme: theme,
             title: 'Fooderlich',
             //home: const SplashScreen(),
-            home: Router(
+            backButtonDispatcher: RootBackButtonDispatcher(),
+            routeInformationParser: routeParser,
+            routerDelegate: _appRouter,
+            /*home: Router(
               routerDelegate: _appRouter,
               //handling back button
               backButtonDispatcher: RootBackButtonDispatcher(),
-            ),
+            ),*/
           );
         },
       ),
