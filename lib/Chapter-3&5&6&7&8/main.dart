@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_basics_2/Chapter-3&5&6&7&8/navigation/app_route_parser.dart';
 import 'package:provider/provider.dart';
-import 'fooderlich_theme.dart';
-import 'Chapter-3&5&6&7&8/screens/home.dart';
-import 'Chapter-3&5&6&7&8/models/models.dart';
-import '../Chapter-3&5&6&7&8/navigation/app_router.dart';
+import '../fooderlich_theme.dart';
+import 'screens/home.dart';
+import 'models/models.dart';
+import '../../Chapter-3&5&6&7&8/navigation/app_router.dart';
 
 void main() {
   runApp(const Fooderlich());
