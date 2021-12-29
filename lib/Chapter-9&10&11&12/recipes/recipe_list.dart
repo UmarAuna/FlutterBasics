@@ -1,14 +1,16 @@
 import 'dart:math';
+
+import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/custom_dropdown.dart';
-import '../colors.dart';
-import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../network/model_response.dart';
 import '../network/recipe_model.dart';
-import 'package:flutter/services.dart';
-import '../recipe_card.dart';
-import 'recipe_details.dart';
 import '../network/recipe_service.dart';
+import '../recipe_card.dart';
+import '../recipes/recipe_details.dart';
+import '../colors.dart';
 
 class RecipeList extends StatefulWidget {
   const RecipeList({Key? key}) : super(key: key);
@@ -18,13 +20,11 @@ class RecipeList extends StatefulWidget {
 }
 
 class _RecipeListState extends State<RecipeList> {
-
   static const String prefSearchKey = 'previousSearches';
 
   late TextEditingController searchTextController;
   final ScrollController _scrollController = ScrollController();
-
-  List<APIHits>  currentSearchList = [];
+  List<APIHits> currentSearchList = [];
   int currentCount = 0;
   int currentStartPosition = 0;
   int currentEndPosition = 20;
@@ -32,15 +32,13 @@ class _RecipeListState extends State<RecipeList> {
   bool hasMore = false;
   bool loading = false;
   bool inErrorState = false;
-
   List<String> previousSearches = <String>[];
 
-
-  
   @override
   void initState() {
     super.initState();
     getPreviousSearches();
+
     searchTextController = TextEditingController(text: '');
     _scrollController
       ..addListener(() {
@@ -63,20 +61,11 @@ class _RecipeListState extends State<RecipeList> {
       });
   }
 
-
-  Future<APIRecipeQuery> getRecipeData(String query, int from, int to) async {
-    final recipeJson = await RecipeService().getRecipes(query, from, to);
-    final recipeMap = json.decode(recipeJson);
-    return APIRecipeQuery.fromJson(recipeMap);
-  }
-
-
   @override
   void dispose() {
     searchTextController.dispose();
     super.dispose();
   }
-
 
   void savePreviousSearches() async {
     final prefs = await SharedPreferences.getInstance();
@@ -85,16 +74,15 @@ class _RecipeListState extends State<RecipeList> {
 
   void getPreviousSearches() async {
     final prefs = await SharedPreferences.getInstance();
-    if(prefs.containsKey(prefSearchKey)) {
+    if (prefs.containsKey(prefSearchKey)) {
       final searches = prefs.getStringList(prefSearchKey);
-      if(searches != null) {
+      if (searches != null) {
         previousSearches = searches;
-      }else {
+      } else {
         previousSearches = <String>[];
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -121,14 +109,12 @@ class _RecipeListState extends State<RecipeList> {
         padding: const EdgeInsets.all(4.0),
         child: Row(
           children: [
-            // Replace
             IconButton(
               icon: const Icon(Icons.search),
               onPressed: () {
                 startSearch(searchTextController.text);
-                // Hide the keyboard by using the FocusScope class.
                 final currentFocus = FocusScope.of(context);
-                if(!currentFocus.hasPrimaryFocus) {
+                if (!currentFocus.hasPrimaryFocus) {
                   currentFocus.unfocus();
                 }
               },
@@ -137,55 +123,55 @@ class _RecipeListState extends State<RecipeList> {
               width: 6.0,
             ),
             Expanded(
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: TextField(
-                          decoration: const InputDecoration(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
                             border: InputBorder.none, hintText: 'Search'),
-                          autofocus: false,
-                          textInputAction: TextInputAction.done,
-                          onSubmitted: (value) {
-                            if(!previousSearches.contains(value)) {
-                              previousSearches.add(value);
-                              savePreviousSearches();
-                            }
-                          },
-                          controller: searchTextController,
-                        )),
-                    PopupMenuButton<String>(
-                        icon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: lightGrey,
-                        ),
-                        onSelected: (String value){
-                          searchTextController.text = value;
-                          startSearch(searchTextController.text);
+                        autofocus: false,
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (value) {
+                          if (!previousSearches.contains(value)) {
+                            previousSearches.add(value);
+                            savePreviousSearches();
+                          }
                         },
-                        itemBuilder: (BuildContext context) {
-                          return previousSearches.map<CustomDropdownMenuItem<String>>((String value){
-                            return CustomDropdownMenuItem<String>(
-                              text: value,
-                              value: value,
-                              callback: () {
-                                  setState(() {
-                                    previousSearches.remove(value);
-                                    Navigator.pop(context);
-                                  });
-                              },
-                            );
-                          }).toList();
-                        }
-                    )
-                  ],
-                )
-            )
+                        controller: searchTextController,
+                      )),
+                  PopupMenuButton<String>(
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: lightGrey,
+                    ),
+                    onSelected: (String value) {
+                      searchTextController.text = value;
+                      startSearch(searchTextController.text);
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return previousSearches
+                          .map<CustomDropdownMenuItem<String>>((String value) {
+                        return CustomDropdownMenuItem<String>(
+                          text: value,
+                          value: value,
+                          callback: () {
+                            setState(() {
+                              previousSearches.remove(value);
+                              Navigator.pop(context);
+                            });
+                          },
+                        );
+                      }).toList();
+                    },
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
-
 
   void startSearch(String value) {
     setState(() {
@@ -195,52 +181,56 @@ class _RecipeListState extends State<RecipeList> {
       currentStartPosition = 0;
       hasMore = true;
       value = value.trim();
-
-      if(!previousSearches.contains(value)) {
+      if (!previousSearches.contains(value)) {
         previousSearches.add(value);
         savePreviousSearches();
       }
     });
   }
 
-  // TODO: Replace this _buildRecipeLoader definition
   Widget _buildRecipeLoader(BuildContext context) {
-    if(searchTextController.text.length < 3) {
-      return Container(
-        child: Text("Search for Recipe e.g Chicken"),
-      );
+    if (searchTextController.text.length < 3) {
+      return Container();
     }
-
-    return FutureBuilder<APIRecipeQuery>(
-      future: getRecipeData(searchTextController.text.trim(), currentStartPosition, currentEndPosition),
+    return FutureBuilder<Response<Result<APIRecipeQuery>>>(
+      future: RecipeService.create().queryRecipes(
+          searchTextController.text.trim(),
+          currentStartPosition,
+          currentEndPosition),
       builder: (context, snapshot) {
-        if(snapshot.connectionState == ConnectionState.done) {
-          if(snapshot.hasError) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
             return Center(
-              child:
-              Text(
+              child: Text(
                 snapshot.error.toString(),
                 textAlign: TextAlign.center,
                 textScaleFactor: 1.3,
-              )
+              ),
             );
           }
+
           loading = false;
-          final query = snapshot.data;
+          final result = snapshot.data?.body;
+          // Hit an error
+          if (result is Error) {
+            inErrorState = true;
+            return _buildRecipeList(context, currentSearchList);
+          }
+          final query = (result as Success).value;
           inErrorState = false;
-          if(query != null) {
-            currentCount = query.count;
-            hasMore = query.more;
-            currentSearchList.addAll(query.hits);
-            if(query.to < currentEndPosition) {
-              currentEndPosition = query.to;
-            }
+          currentCount = query.count;
+          hasMore = query.more;
+          currentSearchList.addAll(query.hits);
+          if (query.to < currentEndPosition) {
+            currentEndPosition = query.to;
           }
           return _buildRecipeList(context, currentSearchList);
         } else {
-          if(currentCount == 0) {
-            // Show a loading indicator while waiting for the recipes
-            return const Center(child: CircularProgressIndicator());
+          if (currentCount == 0) {
+            // Show a loading indicator while waiting for the movies
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           } else {
             return _buildRecipeList(context, currentSearchList);
           }
@@ -253,36 +243,33 @@ class _RecipeListState extends State<RecipeList> {
     final size = MediaQuery.of(context).size;
     const itemHeight = 310;
     final itemWidth = size.width / 2;
-
     return Flexible(
-        child: GridView.builder(
-          controller: _scrollController,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: (itemWidth / itemHeight),
-          ),
-          itemCount: hits.length,
-          itemBuilder: (BuildContext context, int index) {
-            return _buildRecipeCard(recipeListContext, hits, index);
-          },
-        )
+      child: GridView.builder(
+        controller: _scrollController,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: (itemWidth / itemHeight),
+        ),
+        itemCount: hits.length,
+        itemBuilder: (BuildContext context, int index) {
+          return _buildRecipeCard(recipeListContext, hits, index);
+        },
+      ),
     );
   }
-}
 
-
-Widget _buildRecipeCard(
-BuildContext topLevelContext, List<APIHits> hits, int index) {
-  final recipe = hits[index].recipe;
-  return GestureDetector(
-    onTap: () {
-      Navigator.push(topLevelContext, MaterialPageRoute(
+  Widget _buildRecipeCard(
+      BuildContext topLevelContext, List<APIHits> hits, int index) {
+    final recipe = hits[index].recipe;
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
           builder: (context) {
-            return const RecipeList();
+            return const RecipeDetails();
           },
-          ));
-    },
-
-    child: recipeCard(recipe)
-  );
+        ));
+      },
+      child: recipeCard(recipe),
+    );
+  }
 }

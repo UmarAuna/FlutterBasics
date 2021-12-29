@@ -4,7 +4,7 @@ part 'recipe_model.g.dart';
 
 @JsonSerializable()
 class APIRecipeQuery {
-  // TODO: Add APIRecipeQuery.fromJson
+
   factory APIRecipeQuery.fromJson(Map<String, dynamic> json) =>
       _$APIRecipeQueryFromJson(json);
 
@@ -29,7 +29,6 @@ class APIRecipeQuery {
 
 }
 
-// TODO: Add @JsonSerializable() class APIHits
 @JsonSerializable()
 class APIHits {
   APIRecipe recipe;
@@ -43,7 +42,7 @@ class APIHits {
   Map<String, dynamic> toJson() => _$APIHitsToJson(this);
 }
 
-// TODO: Add @JsonSerializable() class APIRecipe
+
 @JsonSerializable()
 class APIRecipe {
   String label;
@@ -72,7 +71,7 @@ class APIRecipe {
 
 }
 
-// TODO: Add @JsonSerializable() class APIIngredients
+
 @JsonSerializable()
 class APIIngredients {
   @JsonKey(name: 'text')
@@ -90,7 +89,7 @@ class APIIngredients {
   Map<String, dynamic> toJson() => _$APIIngredientsToJson(this);
 }
 
-// TODO: Add global Helper Functions
+
 String getCalories(double? calories) {
   if (calories == null) {
     return '0 KCAL';
