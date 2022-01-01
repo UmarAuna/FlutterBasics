@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'ingredient.dart';
 
+// ignore: must_be_immutable
 class Recipe extends Equatable {
 
   int? id;
