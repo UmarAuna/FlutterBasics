@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'main_screen.dart';
-import 'mock_service/mock_service.dart';
-import 'data/repository.dart';
-import 'network/recipe_service.dart';
-import 'network/service_interface.dart';
-import 'data/moor/moor_repository.dart';
+import 'Chapter-9&10&11&12&13&14&15/main_screen.dart';
+import 'Chapter-9&10&11&12&13&14&15/mock_service/mock_service.dart';
+import 'Chapter-9&10&11&12&13&14&15/data/repository.dart';
+import 'Chapter-9&10&11&12&13&14&15/network/recipe_service.dart';
+import 'Chapter-9&10&11&12&13&14&15/network/service_interface.dart';
+import 'Chapter-9&10&11&12&13&14&15/data/moor/moor_repository.dart';
 
 
 Future<void> main() async {
