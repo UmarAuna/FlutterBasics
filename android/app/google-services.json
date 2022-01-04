@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "673854506673",
+    "project_id": "raychat-dd024",
+    "storage_bucket": "raychat-dd024.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673854506673:android:ec8483787547bdb08ac490",
+        "android_client_info": {
+          "package_name": "com.raywenderlich.recipe_finder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673854506673-creqp5j6sgp6auho7qtsitusciicldc9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMkw_Q1XUUAbGICrxso8X7DX6HVj7-164"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673854506673-creqp5j6sgp6auho7qtsitusciicldc9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
