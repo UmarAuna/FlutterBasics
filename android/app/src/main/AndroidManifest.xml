@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flutter_basics_2">
    <application
-        android:label="flutter_basics_2"
+        android:label="Recipe 🔎"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -25,7 +25,7 @@
                  Flutter's first frame. -->
             <meta-data
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
-              android:resource="@drawable/launch_background"
+              android:resource="@drawable/loading_background"
               />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
